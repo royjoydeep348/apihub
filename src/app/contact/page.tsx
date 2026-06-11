@@ -17,7 +17,7 @@ const contactSchema = zod.object({
 type ContactFormValues = zod.infer<typeof contactSchema>;
 
 export default function ContactPage() {
-  const { siteData, addSubmission } = usePortal();
+  const { addSubmission } = usePortal();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -77,10 +77,10 @@ export default function ContactPage() {
         <div className="lg:col-span-5 flex flex-col gap-8">
           <div className="flex flex-col gap-3">
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white leading-tight">
-              Platform Integration Desk
+              BDO Corporate Contact
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-              We respond to developer support requests and sales inquiries within one business day. Check our documentation for instant troubleshooting files.
+              Main corporate numbers, office addresses, department contacts, and security reporting channels.
             </p>
           </div>
 
@@ -90,20 +90,11 @@ export default function ContactPage() {
                 <Phone className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">Call Integration Engineers</h4>
-                <span className="text-xs sm:text-sm text-slate-400 block mt-0.5">{siteData.settings.contactPhone}</span>
-                <span className="text-[10px] text-slate-500 block">Mon - Fri, 09:00 - 18:00 EST</span>
-              </div>
-            </div>
-
-            <div className="flex gap-4 items-start">
-              <div className="h-10 w-10 rounded-lg bg-brand-50 dark:bg-brand-950/40 flex items-center justify-center text-brand-600 dark:text-brand-400 shrink-0">
-                <Mail className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">Email Partner Desk</h4>
-                <span className="text-xs sm:text-sm text-slate-400 block mt-0.5">{siteData.settings.contactEmail}</span>
-                <span className="text-[10px] text-slate-500 block">Secure GPG encrypted communication ready</span>
+                <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">Main Corporate Contact Numbers</h4>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-0.5">Corporate Trunkline: (+632) 8840-7000 or (+632) 8702-6000</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">Customer Care/General Hotline: (+632) 8888-0000 (24/7)</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">Domestic Toll-Free (PLDT): 1800-10-631-8000</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">International Toll-Free: (IAC) + 800-8-CALLBDO (2255-236)</span>
               </div>
             </div>
 
@@ -112,8 +103,33 @@ export default function ContactPage() {
                 <MapPin className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">Corporate HQ Office</h4>
-                <span className="text-xs sm:text-sm text-slate-400 block mt-0.5">100 Pine Street, San Francisco, CA 94111</span>
+                <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">BDO Corporate Office Addresses</h4>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-0.5">Principal Address: BDO Corporate Center, 7899 Makati Avenue, Makati City 0726, Philippines</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">Corporate Offices Ortigas (BDO Finance): 39th Floor, BDO Corporate Center Ortigas, 12 ADB Avenue, Ortigas Center, Mandaluyong City</span>
+              </div>
+            </div>
+
+            <div className="flex gap-4 items-start">
+              <div className="h-10 w-10 rounded-lg bg-brand-50 dark:bg-brand-950/40 flex items-center justify-center text-brand-600 dark:text-brand-400 shrink-0">
+                <Mail className="h-5 w-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">Specific Corporate Departments & Emails</h4>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-0.5">Investor Relations & Corporate Planning: irandcorplan@bdo.com.ph</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">Human Resources (HRMD): hrmd@bdo.com.ph</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">BDO Securities Hotline: (+632) 8840-7878 (Monday-Friday, 8:30 AM to 5:00 PM)</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">BDO Cash Management Hotline: (+632) 840-7500 / Domestic Toll-Free: 1-800-10-840-7500</span>
+              </div>
+            </div>
+
+            <div className="flex gap-4 items-start">
+              <div className="h-10 w-10 rounded-lg bg-brand-50 dark:bg-brand-950/40 flex items-center justify-center text-brand-600 dark:text-brand-400 shrink-0">
+                <Phone className="h-5 w-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">Security & Fraud Reporting</h4>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-0.5">Fraud/Lost Cards Hotline: Call the 24/7 BDO hotline directly at (+632) 8888-0000</span>
+                <span className="text-xs sm:text-sm text-slate-400 block mt-1">Email Support: reportphish@bdo.com.ph or callcenter@bdo.com.ph</span>
               </div>
             </div>
           </div>

@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePortal } from "@/context/PortalContext";
 import {
-  Zap,
   Building2,
   User,
   Mail,
@@ -153,9 +153,7 @@ export default function RegisterPage() {
         {/* Header */}
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-9 h-9 bg-brand-500 rounded-xl flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
+            <Image src="/bdo-logo.png" alt="BDO Logo" width={81} height={41} className="h-9 w-auto object-contain" priority />
             <span className="text-lg font-bold text-[var(--foreground)]">
               {siteData.settings.companyName}
             </span>
