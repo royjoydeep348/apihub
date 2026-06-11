@@ -33,6 +33,10 @@ import {
   FileText,
   HelpCircle,
   Download,
+  Terminal,
+  Play,
+  Radio,
+  Database,
 } from "lucide-react";
 
 interface ApiCredential {
@@ -50,6 +54,22 @@ interface UsageDataPoint {
   hour: string;
   calls: number;
   errors: number;
+}
+
+interface SandboxEndpoint {
+  id: string;
+  method: "GET" | "POST";
+  path: string;
+  name: string;
+  description: string;
+  sampleBody: string;
+}
+
+interface SandboxEvent {
+  id: string;
+  type: string;
+  message: string;
+  time: string;
 }
 
 const mockCredentials: ApiCredential[] = [
@@ -100,8 +120,44 @@ const activityLog = [
   { id: 6, action: "Credentials Rotated", detail: "Sandbox key auto-rotated via compliance policy", time: "2d ago", status: "info" },
 ];
 
+const sandboxEndpoints: SandboxEndpoint[] = [
+  {
+    id: "accounts",
+    method: "GET",
+    path: "/v1/accounts",
+    name: "Accounts Snapshot",
+    description: "Fetch mock account balances, status flags, and ledger references.",
+    sampleBody: "{\n  \"customerId\": \"CUST-102938\",\n  \"includeDormant\": false\n}",
+  },
+  {
+    id: "transfer",
+    method: "POST",
+    path: "/v1/transfers/simulate",
+    name: "Transfer Simulation",
+    description: "Create a test transfer and receive realtime clearing events.",
+    sampleBody: "{\n  \"sourceAccount\": \"001234567890\",\n  \"destinationAccount\": \"009876543210\",\n  \"amount\": 12500,\n  \"currency\": \"PHP\",\n  \"reference\": \"SANDBOX-ORDER-1001\"\n}",
+  },
+  {
+    id: "kyc",
+    method: "POST",
+    path: "/v1/compliance/kyc-check",
+    name: "KYC Status Check",
+    description: "Run a mock compliance check with deterministic risk scoring.",
+    sampleBody: "{\n  \"entityName\": \"Acme Payments Inc.\",\n  \"registrationCountry\": \"PH\",\n  \"registrationNumber\": \"SEC-2026-1001\"\n}",
+  },
+  {
+    id: "webhook",
+    method: "POST",
+    path: "/v1/webhooks/test",
+    name: "Webhook Delivery Test",
+    description: "Send a sample event to validate partner webhook handling.",
+    sampleBody: "{\n  \"eventType\": \"transfer.settled\",\n  \"targetUrl\": \"https://partner.example.com/webhooks/bdo\",\n  \"signPayload\": true\n}",
+  },
+];
+
 const navItems = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "sandbox", label: "Sandbox APIs", icon: Terminal },
   { id: "credentials", label: "API Credentials", icon: Key },
   { id: "analytics", label: "Usage Analytics", icon: BarChart3 },
   { id: "notifications", label: "Notifications", icon: Bell },
@@ -118,6 +174,14 @@ export default function DashboardPage() {
   const [revealedSecrets, setRevealedSecrets] = useState<Set<string>>(new Set());
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [selectedSandboxId, setSelectedSandboxId] = useState(sandboxEndpoints[0].id);
+  const [sandboxPayload, setSandboxPayload] = useState(sandboxEndpoints[0].sampleBody);
+  const [sandboxResponse, setSandboxResponse] = useState("");
+  const [sandboxEvents, setSandboxEvents] = useState<SandboxEvent[]>([
+    { id: "evt-1", type: "connection.ready", message: "Realtime sandbox stream connected", time: "Just now" },
+    { id: "evt-2", type: "ledger.seeded", message: "Mock accounts and balances are available", time: "Just now" },
+  ]);
+  const [isSandboxRunning, setIsSandboxRunning] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -168,6 +232,79 @@ export default function DashboardPage() {
         return c;
       })
     );
+  };
+
+  const selectedSandbox = sandboxEndpoints.find((endpoint) => endpoint.id === selectedSandboxId) || sandboxEndpoints[0];
+
+  const selectSandboxEndpoint = (endpoint: SandboxEndpoint) => {
+    setSelectedSandboxId(endpoint.id);
+    setSandboxPayload(endpoint.sampleBody);
+    setSandboxResponse("");
+  };
+
+  const runSandboxRequest = async () => {
+    setIsSandboxRunning(true);
+    const startedAt = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    setSandboxEvents((prev) => [
+      {
+        id: "evt-" + Date.now(),
+        type: "request.accepted",
+        message: `${selectedSandbox.method} ${selectedSandbox.path} queued with sandbox credentials`,
+        time: startedAt,
+      },
+      ...prev,
+    ]);
+
+    await new Promise((resolve) => setTimeout(resolve, 900));
+
+    const correlationId = "sbx_" + Math.random().toString(36).slice(2, 10);
+    const response = {
+      status: 200,
+      environment: "sandbox",
+      endpoint: selectedSandbox.path,
+      correlationId,
+      latencyMs: Math.floor(35 + Math.random() * 95),
+      data:
+        selectedSandbox.id === "accounts"
+          ? {
+              accounts: [
+                { accountId: "001234567890", type: "Savings", currency: "PHP", availableBalance: 250000.75, status: "ACTIVE" },
+                { accountId: "009876543210", type: "Current", currency: "PHP", availableBalance: 87500.5, status: "ACTIVE" },
+              ],
+            }
+          : selectedSandbox.id === "transfer"
+          ? {
+              transferId: "TRF-" + Math.floor(100000 + Math.random() * 900000),
+              status: "SETTLED",
+              clearingRail: "BDO_SANDBOX_INSTAPAY",
+              ledgerPosted: true,
+            }
+          : selectedSandbox.id === "kyc"
+          ? {
+              verificationId: "KYC-" + Math.floor(100000 + Math.random() * 900000),
+              riskScore: 18,
+              result: "APPROVED_FOR_SANDBOX",
+              checks: ["registry_match", "watchlist_clear", "document_format_valid"],
+            }
+          : {
+              deliveryId: "WH-" + Math.floor(100000 + Math.random() * 900000),
+              status: "DELIVERED",
+              signatureHeader: "x-bdo-signature",
+              retryCount: 0,
+            },
+    };
+
+    setSandboxResponse(JSON.stringify(response, null, 2));
+    setSandboxEvents((prev) => [
+      {
+        id: "evt-" + Date.now() + "-done",
+        type: selectedSandbox.id === "transfer" ? "transfer.settled" : "response.delivered",
+        message: `${selectedSandbox.name} completed in ${response.latencyMs}ms`,
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
+      },
+      ...prev,
+    ]);
+    setIsSandboxRunning(false);
   };
 
   const unreadNotifications = siteData.notifications.filter((n) => !n.read);
@@ -312,6 +449,7 @@ export default function DashboardPage() {
           <div>
             <h1 className="text-lg font-bold text-[var(--foreground)] capitalize">
               {activeSection === "overview" ? "Dashboard Overview" :
+               activeSection === "sandbox" ? "Sandbox APIs" :
                activeSection === "credentials" ? "API Credentials" :
                activeSection === "analytics" ? "Usage Analytics" :
                activeSection === "notifications" ? "Notifications" : "Settings"}
@@ -429,6 +567,7 @@ export default function DashboardPage() {
                   <h3 className="font-bold text-[var(--foreground)] mb-4">Quick Actions</h3>
                   <div className="space-y-2">
                     {[
+                      { label: "Open Sandbox APIs", icon: Terminal, action: () => setActiveSection("sandbox") },
                       { label: "Manage API Keys", icon: Key, action: () => setActiveSection("credentials") },
                       { label: "View Analytics", icon: BarChart3, action: () => setActiveSection("analytics") },
                       { label: "Read Docs", icon: FileText, href: "/resources" },
@@ -489,6 +628,147 @@ export default function DashboardPage() {
                       <span className="text-xs text-slate-400 flex-shrink-0">{log.time}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Sandbox */}
+          {activeSection === "sandbox" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                {[
+                  { label: "Sandbox Status", value: "Online", icon: Radio, tone: "text-green-600", bg: "bg-green-50 dark:bg-green-950/30" },
+                  { label: "Mock Data Sets", value: "12 active", icon: Database, tone: "text-brand-600", bg: "bg-brand-50 dark:bg-brand-950/30" },
+                  { label: "Realtime Events", value: `${sandboxEvents.length} received`, icon: Activity, tone: "text-purple-600", bg: "bg-purple-50 dark:bg-purple-950/30" },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.label} className="bg-white dark:bg-brand-900/50 rounded-2xl p-5 border border-slate-100 dark:border-brand-800">
+                      <div className={`w-10 h-10 ${item.bg} rounded-xl flex items-center justify-center mb-3`}>
+                        <Icon className={`w-5 h-5 ${item.tone}`} />
+                      </div>
+                      <p className="text-2xl font-bold text-[var(--foreground)]">{item.value}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{item.label}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                <div className="xl:col-span-4 bg-white dark:bg-brand-900/50 rounded-2xl border border-slate-100 dark:border-brand-800 overflow-hidden">
+                  <div className="px-6 py-4 border-b border-slate-100 dark:border-brand-800">
+                    <h3 className="font-bold text-[var(--foreground)]">Realtime API Catalog</h3>
+                    <p className="text-xs text-slate-400 mt-0.5">Use sandbox credentials against mock BDO endpoints.</p>
+                  </div>
+                  <div className="p-3 space-y-2">
+                    {sandboxEndpoints.map((endpoint) => (
+                      <button
+                        key={endpoint.id}
+                        onClick={() => selectSandboxEndpoint(endpoint)}
+                        className={`w-full text-left rounded-xl p-4 border transition-all ${
+                          selectedSandboxId === endpoint.id
+                            ? "border-brand-300 bg-brand-50 dark:border-brand-700 dark:bg-brand-950/40"
+                            : "border-slate-100 dark:border-brand-800 hover:bg-slate-50 dark:hover:bg-brand-800/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`text-[10px] font-bold px-2 py-1 rounded-md ${
+                            endpoint.method === "GET"
+                              ? "bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300"
+                              : "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300"
+                          }`}>
+                            {endpoint.method}
+                          </span>
+                          <code className="text-xs text-slate-500 dark:text-slate-400 truncate">{endpoint.path}</code>
+                        </div>
+                        <p className="text-sm font-semibold text-[var(--foreground)]">{endpoint.name}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{endpoint.description}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="xl:col-span-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="bg-white dark:bg-brand-900/50 rounded-2xl border border-slate-100 dark:border-brand-800 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-slate-100 dark:border-brand-800 flex items-center justify-between gap-3">
+                      <div>
+                        <h3 className="font-bold text-[var(--foreground)]">Request Builder</h3>
+                        <p className="text-xs text-slate-400 mt-0.5">{selectedSandbox.method} https://sandbox.bdo.com{selectedSandbox.path}</p>
+                      </div>
+                      <button
+                        onClick={runSandboxRequest}
+                        disabled={isSandboxRunning}
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all"
+                      >
+                        {isSandboxRunning ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            Running
+                          </>
+                        ) : (
+                          <>
+                            <Play className="w-4 h-4" />
+                            Run
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                          Headers
+                        </label>
+                        <div className="rounded-xl bg-slate-950 text-brand-100 p-4 font-mono text-[11px] overflow-x-auto">
+                          <pre>{`Authorization: Bearer ${credentials.find((cred) => cred.environment === "sandbox")?.clientSecret.substring(0, 18) || "sk_test_demo"}...
+X-Partner-Code: ${user.company || "Partner Sandbox"}
+Content-Type: application/json`}</pre>
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="sandbox-payload" className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                          Payload
+                        </label>
+                        <textarea
+                          id="sandbox-payload"
+                          value={sandboxPayload}
+                          onChange={(event) => setSandboxPayload(event.target.value)}
+                          rows={10}
+                          className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-brand-950/30 px-4 py-3 font-mono text-xs text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-brand-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden">
+                      <div className="px-5 py-3 border-b border-slate-800 flex items-center justify-between">
+                        <h3 className="font-bold text-white text-sm">Response</h3>
+                        <span className="text-[10px] text-green-300 bg-green-950/50 border border-green-800 px-2 py-1 rounded-full">Mock realtime</span>
+                      </div>
+                      <pre className="min-h-[260px] max-h-[360px] overflow-auto p-5 text-xs text-brand-100 font-mono whitespace-pre-wrap">
+                        {sandboxResponse || "// Run an endpoint to view the sandbox response here."}
+                      </pre>
+                    </div>
+
+                    <div className="bg-white dark:bg-brand-900/50 rounded-2xl border border-slate-100 dark:border-brand-800 overflow-hidden">
+                      <div className="px-5 py-3 border-b border-slate-100 dark:border-brand-800 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <h3 className="font-bold text-[var(--foreground)] text-sm">Realtime Event Stream</h3>
+                      </div>
+                      <div className="max-h-64 overflow-auto divide-y divide-slate-100 dark:divide-brand-800">
+                        {sandboxEvents.map((event) => (
+                          <div key={event.id} className="px-5 py-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <code className="text-xs font-semibold text-brand-600 dark:text-brand-400">{event.type}</code>
+                              <span className="text-[10px] text-slate-400">{event.time}</span>
+                            </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{event.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
