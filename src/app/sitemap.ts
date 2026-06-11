@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://nexusport.example.com";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://bdo.example.com";
 
   const staticRoutes = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 1.0 },

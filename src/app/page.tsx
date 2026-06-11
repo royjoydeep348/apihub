@@ -70,7 +70,7 @@ export default function Home() {
         "Complete transaction history analytics.",
       ],
       code: `// Fetch mock accounts balances
-curl -X GET "https://sandbox.nexusport.com/v1/accounts" \\
+curl -X GET "https://sandbox.bdo.com/v1/accounts" \\
   -H "Authorization: Bearer mock_token_platinum" \\
   -H "X-Partner-Id: Capgemini_Aero"
 
@@ -91,7 +91,7 @@ curl -X GET "https://sandbox.nexusport.com/v1/accounts" \\
         "Dynamic risk grading dashboard modules.",
       ],
       code: `// Check background risk parameters
-const { validateEntity } = require('@nexusport/compliance-validator');
+const { validateEntity } = require('@bdo/compliance-validator');
 
 const result = await validateEntity({
   legalName: "FinBank Global Ltd",
@@ -322,7 +322,7 @@ console.log(result.riskScore); // Output: "LOW" (Passed KYC)`,
                 <span className="h-3 w-3 rounded-full bg-red-500"></span>
                 <span className="h-3 w-3 rounded-full bg-yellow-500"></span>
                 <span className="h-3 w-3 rounded-full bg-green-500"></span>
-                <span className="ml-2 font-semibold">nexusport_console.sh</span>
+                <span className="ml-2 font-semibold">bdo_console.sh</span>
               </div>
               <span>UTF-8</span>
             </div>
@@ -397,7 +397,7 @@ console.log(result.riskScore); // Output: "LOW" (Passed KYC)`,
         <SectionHeader
           subtitle="Testimonials"
           title="What Our Partners Say"
-          description="Hear from tech leaders, operations managers, and CTOs utilizing the NexusPort portal."
+          description="Hear from tech leaders, operations managers, and CTOs utilizing the BDO portal."
         />
 
         <div className="relative max-w-4xl mx-auto bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 sm:p-12 rounded-2xl shadow-sm">

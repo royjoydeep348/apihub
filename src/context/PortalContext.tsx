@@ -165,10 +165,10 @@ const PortalContext = createContext<PortalContextType | undefined>(undefined);
 // Initial Static Data
 const defaultSiteData: PortalData = {
   settings: {
-    companyName: "NexusPort",
-    logoText: "NexusPort",
+    companyName: "BDO",
+    logoText: "BDO",
     logoUrl: "",
-    contactEmail: "partners@nexusport.com",
+    contactEmail: "partners@bdo.com",
     contactPhone: "+1 (800) 555-0199",
     supportUrl: "/faq",
     defaultLang: "EN",
@@ -180,7 +180,7 @@ const defaultSiteData: PortalData = {
   },
   hero: {
     headline: "The Unified Partner Portal for Modern Enterprise Integrations",
-    description: "Accelerate development cycles, establish secure cloud connections, and scale your co-selling partnerships with NexusPort.",
+    description: "Accelerate development cycles, establish secure cloud connections, and scale your co-selling partnerships with BDO.",
     primaryCtaText: "Become a Partner",
     primaryCtaUrl: "/register",
     secondaryCtaText: "Explore Solutions",
@@ -232,7 +232,7 @@ const defaultSiteData: PortalData = {
       name: "Sarah Jenkins",
       role: "VP of Strategic Alliances",
       company: "FinBank Global",
-      quote: "NexusPort shortened our partner integration cycle from months to under two weeks. The interactive sandboxes and automated verification APIs are unmatched in the enterprise space.",
+      quote: "BDO shortened our partner integration cycle from months to under two weeks. The interactive sandboxes and automated verification APIs are unmatched in the enterprise space.",
       avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&h=100&q=80",
       rating: 5,
       isFeatured: true,
@@ -242,7 +242,7 @@ const defaultSiteData: PortalData = {
       name: "Marcus Vance",
       role: "Chief Technology Officer",
       company: "GlobalPay Solutions",
-      quote: "Security is non-negotiable for our payment rail connectivity. NexusPort's pre-configured compliance blueprints and secure gateway gave our board full confidence to launch ahead of schedule.",
+      quote: "Security is non-negotiable for our payment rail connectivity. BDO's pre-configured compliance blueprints and secure gateway gave our board full confidence to launch ahead of schedule.",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100&q=80",
       rating: 5,
       isFeatured: true,
@@ -266,8 +266,8 @@ const defaultSiteData: PortalData = {
       outcome: "Modernized 30+ core legacy services to cloud endpoints safely, reducing API request latencies by 40%.",
       roi: "300% Developer Onboarding Acceleration",
       category: "Banking Modernization",
-      summary: "FinBank Global needed to safely connect legacy transaction systems to third-party fintech apps. NexusPort provided pre-built schema definitions and a secure API distribution gateway.",
-      content: "Detailed post-migration analysis showed that migrating core services to the NexusPort secure gateway reduced configuration faults by 80%. Integrating with the sandbox allowed external partners to safely execute dummy requests, boosting developer registration by over 300%. The system handles over 100M daily events with zero disruption to the legacy database layers.",
+      summary: "FinBank Global needed to safely connect legacy transaction systems to third-party fintech apps. BDO provided pre-built schema definitions and a secure API distribution gateway.",
+      content: "Detailed post-migration analysis showed that migrating core services to the BDO secure gateway reduced configuration faults by 80%. Integrating with the sandbox allowed external partners to safely execute dummy requests, boosting developer registration by over 300%. The system handles over 100M daily events with zero disruption to the legacy database layers.",
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=400&q=80",
     },
     {
@@ -277,7 +277,7 @@ const defaultSiteData: PortalData = {
       outcome: "Reduced manual compliance checks by 95%, accelerating onboarding timeframes from 45 days to 2 days.",
       roi: "95% Reduction in Admin Overhead",
       category: "Compliance & Security",
-      summary: "GlobalPay compliance pipelines were heavily manual, slowing partner sign-up. Using NexusPort's automated compliance workflows, verification checks were integrated directly into the onboarding wizard.",
+      summary: "GlobalPay compliance pipelines were heavily manual, slowing partner sign-up. Using BDO's automated compliance workflows, verification checks were integrated directly into the onboarding wizard.",
       content: "By implementing automated checks using Zod validator endpoints and integrating third-party background API scripts, GlobalPay eliminated paperwork bottleneck. Submissions are now auto-flagged and analyzed by mock AI verification algorithms. Verified partners instantly receive secure client keys, cutting down wait lists.",
       image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80",
     },
@@ -332,9 +332,9 @@ export const PortalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Load from local storage if available
   useEffect(() => {
-    const savedData = localStorage.getItem("nexus_portal_data");
-    const savedUser = localStorage.getItem("nexus_portal_user");
-    const savedTheme = localStorage.getItem("nexus_portal_theme") as "light" | "dark" | null;
+    const savedData = localStorage.getItem("bdo_portal_data");
+    const savedUser = localStorage.getItem("bdo_portal_user");
+    const savedTheme = localStorage.getItem("bdo_portal_theme") as "light" | "dark" | null;
 
     if (savedData) {
       try {
@@ -366,13 +366,13 @@ export const PortalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const toggleTheme = () => {
     const nextTheme = theme === "light" ? "dark" : "light";
     setTheme(nextTheme);
-    localStorage.setItem("nexus_portal_theme", nextTheme);
+    localStorage.setItem("bdo_portal_theme", nextTheme);
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
   };
 
   const saveAndSetData = (newData: PortalData) => {
     setSiteData(newData);
-    localStorage.setItem("nexus_portal_data", JSON.stringify(newData));
+    localStorage.setItem("bdo_portal_data", JSON.stringify(newData));
   };
 
   const login = (role: "partner" | "admin" | "guest", customUser?: Partial<UserSession>) => {
@@ -387,14 +387,14 @@ export const PortalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } else if (role === "admin") {
       newSession = {
         name: "Admin Manager",
-        email: "admin@nexusport.com",
+        email: "admin@bdo.com",
         role: "admin",
       };
     } else {
       newSession = { name: "Guest", email: "", role: "guest" };
     }
     setUser(newSession);
-    localStorage.setItem("nexus_portal_user", JSON.stringify(newSession));
+    localStorage.setItem("bdo_portal_user", JSON.stringify(newSession));
 
     // Send notifications for login events
     if (role !== "guest") {
@@ -409,7 +409,7 @@ export const PortalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const logout = () => {
     const guestUser: UserSession = { name: "Guest", email: "", role: "guest" };
     setUser(guestUser);
-    localStorage.setItem("nexus_portal_user", JSON.stringify(guestUser));
+    localStorage.setItem("bdo_portal_user", JSON.stringify(guestUser));
   };
 
   const updateSettings = (settings: Partial<SiteSettings>) => {
@@ -524,7 +524,7 @@ export const PortalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
     setSiteData((prev) => {
       const updated = { ...prev, notifications: [newNotification, ...prev.notifications] };
-      localStorage.setItem("nexus_portal_data", JSON.stringify(updated));
+      localStorage.setItem("bdo_portal_data", JSON.stringify(updated));
       return updated;
     });
   };

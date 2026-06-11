@@ -9,7 +9,7 @@ export default function CookieConsent() {
 
   useEffect(() => {
     // Check if consent has been given
-    const consent = localStorage.getItem("nexus_cookie_consent");
+    const consent = localStorage.getItem("bdo_cookie_consent");
     if (!consent) {
       // Small delay before rendering
       const timer = setTimeout(() => {
@@ -20,12 +20,12 @@ export default function CookieConsent() {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem("nexus_cookie_consent", "accepted");
+    localStorage.setItem("bdo_cookie_consent", "accepted");
     setVisible(false);
   };
 
   const handleDecline = () => {
-    localStorage.setItem("nexus_cookie_consent", "declined");
+    localStorage.setItem("bdo_cookie_consent", "declined");
     setVisible(false);
   };
 

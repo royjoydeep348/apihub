@@ -44,10 +44,10 @@ export default function AboutPage() {
             Bridging Legacy Systems with Secure Cloud Sync
           </h2>
           <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-            NexusPort was founded in 2020 by a core group of banking architects and security engineers who faced a recurring problem: legacy financial networks are incredibly slow to integrate with modern partner platforms.
+            BDO was founded in 2020 by a core group of banking architects and security engineers who faced a recurring problem: legacy financial networks are incredibly slow to integrate with modern partner platforms.
           </p>
           <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-            By standardizing payload schemas via GitHub Spec Kit formats and providing automated compliance testing pipelines, we've helped dozens of Fortune 500 networks launch joint products and co-sell initiatives safely.
+            By standardizing payload schemas via GitHub Spec Kit formats and providing automated compliance testing pipelines, we&apos;ve helped dozens of Fortune 500 networks launch joint products and co-sell initiatives safely.
           </p>
           <div className="flex gap-4 items-center p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
             <Award className="h-10 w-10 text-brand-500 shrink-0" />
@@ -60,7 +60,7 @@ export default function AboutPage() {
         
         <img 
           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" 
-          alt="NexusPort Team" 
+          alt="BDO Team" 
           className="w-full h-80 lg:h-[450px] object-cover rounded-2xl shadow-lg"
         />
       </section>

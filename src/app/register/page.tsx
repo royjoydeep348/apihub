@@ -164,7 +164,7 @@ export default function RegisterPage() {
             Become a Partner
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
-            Complete the form below to apply for NexusPort partner access.
+            Complete the form below to apply for BDO partner access.
           </p>
         </div>
 

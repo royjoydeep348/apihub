@@ -32,7 +32,7 @@ specKit:
 const axios = require('axios');
 
 async function checkGateway() {
-  const response = await axios.get('https://sandbox.nexusport.com/v1/health', {
+  const response = await axios.get('https://sandbox.bdo.com/v1/health', {
     headers: {
       'Authorization': 'Bearer test_key_gold_883',
       'X-Partner-Code': 'NXP_DEVELOPER'
@@ -84,10 +84,10 @@ checkGateway();`,
         "Python data synchronization scripts.",
       ],
       code: `// Install via package manager
-npm install @nexusport/ledger-client-node
+npm install @bdo/ledger-client-node
 
 // Go Module
-go get github.com/nexusport/ledger-client-go`,
+go get github.com/bdo/ledger-client-go`,
       codeLang: "Bash",
     },
   ];

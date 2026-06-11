@@ -16,7 +16,7 @@ export default function LiveChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hello! Welcome to the NexusPort developer support channel. How can I assist you with integrations today?",
+      text: "Hello! Welcome to the BDO developer support channel. How can I assist you with integrations today?",
       sender: "bot",
       time: "Just now",
     },
@@ -47,7 +47,7 @@ export default function LiveChat() {
 
     // Simulate bot response
     setTimeout(() => {
-      let replyText = "I'm sorry, I didn't quite catch that. You can contact our sales team directly at sales@nexusport.com, or visit our documentation center.";
+      let replyText = "I'm sorry, I didn't quite catch that. You can contact our sales team directly at sales@bdo.com, or visit our documentation center.";
 
       if (query.includes("register") || query.includes("sign up") || query.includes("onboarding")) {
         replyText = "You can sign up as an enterprise partner by clicking the 'Become a Partner' button in the header or heading to /register. The onboarding steps are fully automated!";
@@ -102,7 +102,7 @@ export default function LiveChat() {
                   <Bot className="h-4.5 w-4.5 text-brand-300" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-xs leading-none">NexusPort Assistant</h4>
+                  <h4 className="font-semibold text-xs leading-none">BDO Assistant</h4>
                   <span className="text-[10px] text-brand-300 leading-none">Automated Support &bull; Online</span>
                 </div>
               </div>

@@ -30,7 +30,7 @@ export default function SuccessStoriesPage() {
             Client Success Stories
           </h1>
           <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Read how global financial networks, retail banks, and fintech processors migrate rails and scale with NexusPort.
+            Read how global financial networks, retail banks, and fintech processors migrate rails and scale with BDO.
           </p>
         </div>
       </section>

@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePortal } from "@/context/PortalContext";
 import {
-  Zap,
   LayoutDashboard,
   Inbox,
   FileText,
@@ -177,9 +177,7 @@ export default function AdminPage() {
         {/* Logo */}
         <div className="p-6 border-b border-slate-100 dark:border-brand-800">
           <Link href="/" className="flex items-center gap-2.5 mb-4">
-            <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
-            </div>
+            <Image src="/bdo-logo.png" alt="BDO Logo" width={72} height={36} className="h-8 w-auto object-contain" />
             <span className="font-bold text-[var(--foreground)]">
               {siteData.settings.companyName}
             </span>

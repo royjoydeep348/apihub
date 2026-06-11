@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePortal } from "@/context/PortalContext";
 import {
@@ -70,9 +71,7 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col justify-between p-12 text-white w-full">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-brand-400 rounded-xl flex items-center justify-center">
-              <Zap className="w-6 h-6 text-white" />
-            </div>
+            <Image src="/bdo-logo.png" alt="BDO Logo" width={90} height={45} className="h-10 w-auto object-contain" priority />
             <span className="text-xl font-bold tracking-tight">
               {siteData.settings.companyName}
             </span>
@@ -117,7 +116,7 @@ export default function LoginPage() {
           {/* Bottom quote */}
           <div className="border-t border-white/10 pt-8">
             <p className="text-white/50 text-sm italic">
-              &ldquo;NexusPort reduced our partner onboarding from 45 days to 2
+              &ldquo;BDO reduced our partner onboarding from 45 days to 2
               days.&rdquo;
             </p>
             <p className="text-white/40 text-xs mt-2">
@@ -132,9 +131,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex lg:hidden items-center gap-3 mb-10">
-            <div className="w-9 h-9 bg-brand-500 rounded-xl flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
+            <Image src="/bdo-logo.png" alt="BDO Logo" width={81} height={41} className="h-9 w-auto object-contain" priority />
             <span className="text-lg font-bold text-[var(--foreground)]">
               {siteData.settings.companyName}
             </span>

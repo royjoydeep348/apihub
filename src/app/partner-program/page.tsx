@@ -157,7 +157,7 @@ export default function PartnerProgramPage() {
               Partner Commission & Revenue Sharing
             </h2>
             <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed mt-4">
-              Our Gold and Platinum partners are eligible for our co-selling commission programs. By building standard SaaS modules on top of the NexusPort ledger syncing gateway, you can publish your integrations in our Partner Catalog and earn referral fees.
+              Our Gold and Platinum partners are eligible for our co-selling commission programs. By building standard SaaS modules on top of the BDO ledger syncing gateway, you can publish your integrations in our Partner Catalog and earn referral fees.
             </p>
             <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed mt-4">
               We provide joint marketing support, structured pitch templates for enterprise clients, and co-branded sales decks to facilitate onboarding.

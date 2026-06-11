@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePortal } from "@/context/PortalContext";
 import { 
   Send, Link2, MessageCircle, Code2, Globe2,
-  Mail, Phone, MapPin, ShieldCheck, Layers 
+  Mail, Phone, MapPin
 } from "lucide-react";
 
 export default function Footer() {
@@ -74,9 +75,7 @@ export default function Footer() {
         {/* Company Identity */}
         <div className="lg:col-span-2 flex flex-col gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white">
-              <Layers className="h-4.5 w-4.5" />
-            </div>
+            <Image src="/bdo-logo.png" alt="BDO Logo" width={72} height={36} className="h-8 w-auto object-contain" />
             <span className="text-lg font-bold tracking-tight text-white">
               {siteData.settings.companyName}
             </span>
